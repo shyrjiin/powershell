@@ -1,18 +1,20 @@
-
+﻿
 function baseline{
 
 write-host "------------------------------------------------------"
-write-host""
-write-host""
-write-host "	1. Gather baseline prior to"
-write-host "	2. Gather system info after"
-write-host "	3. Compare the two output files"
-write-host "	4. Exit"
-write-host ""
-write-host ""
+write-host""							                          
+write-host""							                          
+write-host "	1. Gather baseline prior to"			          
+write-host "	2. Gather system info after"			          
+write-host "	3. Compare the two output files"		          
+write-host "	4. Exit"					                      
+write-host ""							                          
+write-host ""							                          
 write-host "------------------------------------------------------"
+
 $answer = read-host "Choose an option"
 $path = "$env:USERPROFILE\Desktop"
+
 if ($answer -eq 1){
 
 Get-Date | out-file -append -filepath $path/before_baseline.txt
@@ -25,7 +27,7 @@ query user | out-file -append -filepath $path/before_baseline.txt
 
 Get-Process | select-object processname | out-file -append -filepath $path/before_baseline.txt
 
-Get-Service | Select-Object status, displayname | out-file -append -filepath $path/before_baseline.txt
+Get-Service | Select-Object displayname | out-file -append -filepath $path/before_baseline.txt
 
 Get-NetIPConfiguration | out-file -append -filepath $path/before_baseline.txt
 
@@ -33,7 +35,7 @@ Get-NetTCPConnection | format-table state,localport,localaddress,remoteport,remo
 
 Get-SmbShare | out-file -append -filepath $path/before_baseline.txt
 
-Get-PnpDevice | Select-Object class, friendlyname, instanceid | out-file -append -filepath $path/before_baseline.txt
+Get-PnpDevice | Select-Object class, friendlyname | out-file -append -filepath $path/before_baseline.txt
 
 get-ciminstance win32_operatingsystem | format-list * | out-file -append -filepath $path/before_baseline.txt
 
@@ -55,7 +57,7 @@ query user | out-file -append -filepath $path/before_baseline.txt
 
 Get-Process | select-object processname | out-file -append -filepath $path/after_baseline.txt
 
-Get-Service | Select-Object status, displayname | out-file -append -filepath $path/after_baseline.txt
+Get-Service | Select-Object displayname | out-file -append -filepath $path/after_baseline.txt
 
 Get-NetIPConfiguration | out-file -append -filepath $path/after_baseline.txt
 
@@ -63,7 +65,7 @@ Get-NetTCPConnection | format-table state,localport,localaddress,remoteport,remo
 
 Get-SmbShare | out-file -append -filepath $path/after_baseline.txt
 
-Get-PnpDevice | Select-Object class, friendlyname, instanceid | out-file -append -filepath $path/after_baseline.txt
+Get-PnpDevice | Select-Object class, friendlyname | out-file -append -filepath $path/after_baseline.txt
 
 get-ciminstance win32_operatingsystem | format-list * | out-file -append -filepath $path/after_baseline.txt
 
