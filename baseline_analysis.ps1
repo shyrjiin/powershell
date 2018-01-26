@@ -81,7 +81,8 @@ compare-object -ReferenceObject (gc $path/before_baseline.txt) -DifferenceObject
 }
 
 if ($answer -eq 4){exit}
-
+$check = $answer -match '^[1234]'
+if (-not $check) {write-host "Invalid Selection"}
 }
 
 baseline
