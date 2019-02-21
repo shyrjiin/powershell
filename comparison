@@ -1,0 +1,1 @@
+gc .\resolved.txt | % {$x=$_;gc .\apturls.txt | ? {$x-match $_}}
