@@ -1,0 +1,26 @@
+$comp = gc 'C:\Users\test\Desktop\comp.txt'
+$ips = gc 'C:\Users\test\Desktop\ips.txt'
+$files = gc 'C:\Users\test\Desktop\files.txt'
+$reg = gc 'C:\Users\test\Desktop\reg.txt'
+$comp_up = gc 'C:\Users\test\Desktop\comp_up.txt'
+
+#Set-Item WSMan:\localhost\Client\TrustedHosts -Value 10.10.10.*
+
+$ping = '(1..254 | % {"10.10.10.$($_): $(Test-Connection -count 1 -comp 10.10.10.$($_) -quiet)"}'
+
+#if ($ping -eq $true)
+
+foreach ($computer in $comp_up) {
+    Invoke-Command -ComputerName $computer -ScriptBlock {Gci -Path 'C:\users\test\' -Recurse -Force -Depth 5 | Select -expand fullname } >> 'C:\Users\test\Desktop\file_results.txt'
+    Invoke-Command -ComputerName $computer -ScriptBlock {Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run} >> 'C:\Users\test\Desktop\registry_results.txt'
+    Invoke-Command -ComputerName $computer -ScriptBlock {netstat -ano} >> 'C:\users\test\Desktop\net_results.txt'
+    Invoke-Command -ComputerName $computer -ScriptBlock {Get-ItemProperty HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run} >> 'C:\Users\test\Desktop\registry_results.txt'
+    }
+    
+$file_results = 'c:\users\test\desktop\file_results.txt'   
+$registry_results = 'c:\users\test\desktop\registry_results.txt'
+$net_results = 'c:\users\test\desktop\net_results.txt'
+
+gc 'c:\users\test\desktop\file_results.txt' | Select-String -Pattern (gc 'c:\users\test\desktop\files.txt')
+gc 'c:\users\test\desktop\registry_results.txt' | Select-String -Pattern (gc 'c:\users\test\desktop\reg.txt')
+gc 'c:\users\test\desktop\net_results.txt' | Select-String -Pattern (gc 'c:\users\test\desktop\ips.txt')
