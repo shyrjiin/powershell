@@ -1,0 +1,9 @@
+$session = New-PSSession -ComputerName 172.16.12.15 -credential administrator
+
+ Copy-Item .\dbg_GRR_3.2.0.0_amd64.exe -Destination c:\grrclient.exe -ToSession $session
+ 
+.\PsExec.exe \\172.16.12.15 -u administrator -p P@ssw0rd c:\grrclient.exe
+
+then enter-pssession 172.16.12.15 -credential administrator
+
+(Get-Content .\GRR.exe.yaml ).Replace('172.16.12.12','172.16.12.15') | Out-File .\GRR.exe.yaml
